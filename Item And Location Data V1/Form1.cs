@@ -17,22 +17,22 @@ namespace Item_And_Location_Data_V1
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btn_selectExcelfile(object sender, EventArgs e)
         {
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btn_selectOutputfile(object sender, EventArgs e)
         {
 
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void btn_process(object sender, EventArgs e)
         {
 
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void btn_exit(object sender, EventArgs e)
         {
             Environment.Exit(0);
         }
