@@ -18,7 +18,7 @@ namespace Item_And_Location_Data_V1
         public string StockMax { get; set; }      //L
         public string OpeningStockNumber { get; set; }   //O
         public string OpeningStockDate { get; set; }    //T
-        public List<string> Locations { get; set; }     //H
+        public List<string> Locations { get; set; }     //BJ
         public List<string> CurrentStockNo { get; set; }      //R
 
         public RowData_SpareParts()
@@ -59,12 +59,12 @@ namespace Item_And_Location_Data_V1
                     singleRow.StockMax = Convert.ToString(data[i, 12]);
                     singleRow.OpeningStockNumber = Convert.ToString(data[i, 15]);
                     singleRow.OpeningStockDate = Convert.ToString(data[i, 16]);
-                    singleRow.Locations[0] = (Convert.ToString(data[i, 8]));
+                    singleRow.Locations[0] = (Convert.ToString(data[i, 62]));
                     singleRow.CurrentStockNo[0] = (Convert.ToString(data[i, 18]));
 
                     while (temp < rowCount - 1 && Convert.ToString(data[temp + 1, 61]) == "")
                     {
-                        singleRow.Locations[locationCount] = (Convert.ToString(data[temp + 1, 8]));
+                        singleRow.Locations[locationCount] = (Convert.ToString(data[temp + 1, 62]));
                         singleRow.CurrentStockNo[locationCount] = (Convert.ToString(data[temp + 1, 18]));
                         locationCount++;
                         temp++;
@@ -140,18 +140,41 @@ namespace Item_And_Location_Data_V1
         {
             string[] headers = { "Item No", "Drawing No.1", "Position No.1", "Drawing No.2", "Position No.2", "Criticality", "Phase Out", "Wear & Tear", "Min Stock", "Max Stock", "Opening stock", "Opening stock date", "Location Code 1", "Location Stock 1", "Location Code 2", "Location Stock 2", "Location Code 3", "Location Stock 3" };
 
-            worksheet.Columns.ColumnWidth = 20;
+            worksheet.Columns.ColumnWidth = 27;
 
             Range headerRange = worksheet.Rows[1];
 
-            // Set headers in bold
+            // Set headers in bold and red color
             headerRange.Font.Bold = true;
+            headerRange.Font.Color = XlRgbColor.rgbRed;
             for (int i = 0; i < headers.Length; i++)
             {
                 worksheet.Cells[1, i + 1] = headers[i];
             }
+        }
 
+        public void WriteContent(Worksheet worksheet)
+        {
+            // Set data in non-bold and non-colored cells
+            worksheet.Cells[3, 6] = "Safety or Operational";
+            worksheet.Cells[3, 7] = "Yes";
+            worksheet.Cells[3, 8] = "Yes";
+            worksheet.Range["F5:H5"].Merge();
+            worksheet.Cells[5, 6] = "Default: No";
+            worksheet.Range["L5:M5"].Merge();
+            worksheet.Cells[5, 12] = "DD-MM-YYYY";
+            worksheet.Cells[5, 13] = "Set Location 1 as default location";
 
+            // Set bold and colored cells
+            Range boldBlueRange = worksheet.Range["A8:D9"];
+            boldBlueRange.Font.Bold = true;
+            boldBlueRange.Font.Color = XlRgbColor.rgbBlue;
+
+            // Text for row 8
+            worksheet.Cells[8, 1] = "Date Format Should be DD-MM-YYYY as Text";
+
+            // Text for row 9
+            worksheet.Cells[9, 1] = "Migration of Data Will Start from 10 Row Only.";
         }
 
 
