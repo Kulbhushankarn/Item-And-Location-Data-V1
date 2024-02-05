@@ -81,10 +81,15 @@ namespace Item_And_Location_Data_V1
                 }
             }
         }
-
         private void btn_selectExcelfile(object sender, EventArgs e)
         {
+            openFileDialog1.Filter = "Excel Files|*.xlsx";
             openFileDialog1.ShowDialog();
+
+            if (!string.IsNullOrEmpty(openFileDialog1.FileName))
+            {
+                textBox_inputFile.Text = openFileDialog1.FileName;
+            }
 
         }
 
@@ -97,33 +102,46 @@ namespace Item_And_Location_Data_V1
 
         private void btn_process(object sender, EventArgs e)
         {
-            string inputFilePath = openFileDialog1.FileName;
-            string output_SparePartsPath = Path.Combine(textBox_outputFile.Text,"Spare Parts.xlsx");
-            string output_LocationsPath = Path.Combine(textBox_outputFile.Text,"Location.xlsx");
-            App excelApp = new App();
+            try
+            {
+                string inputFilePath = openFileDialog1.FileName;
+                string output_SparePartsPath = Path.Combine(textBox_outputFile.Text, "Spare Parts.xlsx");
+                string output_LocationsPath = Path.Combine(textBox_outputFile.Text, "Location.xlsx");
+                App excelApp = new App();
 
-            Workbook inputWorkbook = excelApp.Workbooks.Open(inputFilePath);
-            Worksheet locationsWorksheet = inputWorkbook.Sheets["Location"];
-            Worksheet sparePartWorksheet = inputWorkbook.Sheets["SparePart"];
-            
-            RowData_Locations obj_Locations = new RowData_Locations();
-            RowData_SpareParts obj_SpareParts= new RowData_SpareParts();
+                Workbook inputWorkbook = excelApp.Workbooks.Open(inputFilePath);
+                Worksheet locationsWorksheet = inputWorkbook.Sheets["Location"];
+                Worksheet sparePartWorksheet = inputWorkbook.Sheets["SparePart"];
+
+                RowData_Locations obj_Locations = new RowData_Locations();
+                RowData_SpareParts obj_SpareParts = new RowData_SpareParts();
 
 
-            List<RowData_Locations> dataToBeWrittenInLocations = obj_Locations.ReadDataFromLocationSheet(locationsWorksheet);
-            List<RowData_SpareParts> dataToBeWrittenInSpareParts=obj_SpareParts.ReadDataFromSparePartsSheet(sparePartWorksheet);
+                List<RowData_Locations> dataToBeWrittenInLocations = obj_Locations.ReadDataFromLocationSheet(locationsWorksheet);
+                List<RowData_SpareParts> dataToBeWrittenInSpareParts = obj_SpareParts.ReadDataFromSparePartsSheet(sparePartWorksheet);
 
-            Workbook outputWorkbook_Locations = excelApp.Workbooks.Add();
-            Worksheet outputLocationsWorksheet = outputWorkbook_Locations.Worksheets.Add();
+                Workbook outputWorkbook_Locations = excelApp.Workbooks.Add();
+                Worksheet outputLocationsWorksheet = outputWorkbook_Locations.Worksheets.Add();
 
-            obj_Locations.WriteDataInLocationSheet(outputLocationsWorksheet,dataToBeWrittenInLocations);
-            outputWorkbook_Locations.SaveAs(output_LocationsPath);
-            Workbook outputWorkbook_SpareParts = excelApp.Workbooks.Add();
-            Worksheet outputSparePartsWorksheet=outputWorkbook_SpareParts.Worksheets.Add();
+                obj_Locations.WriteDataInLocationSheet(outputLocationsWorksheet, dataToBeWrittenInLocations);
+                outputWorkbook_Locations.SaveAs(output_LocationsPath);
+                Workbook outputWorkbook_SpareParts = excelApp.Workbooks.Add();
+                Worksheet outputSparePartsWorksheet = outputWorkbook_SpareParts.Worksheets.Add();
 
-            obj_SpareParts.WriteDataInSparePartsSheet(outputSparePartsWorksheet, dataToBeWrittenInSpareParts);
-            outputWorkbook_SpareParts.SaveAs(output_SparePartsPath);
+                obj_SpareParts.WriteDataInSparePartsSheet(outputSparePartsWorksheet, dataToBeWrittenInSpareParts);
+                outputWorkbook_SpareParts.SaveAs(output_SparePartsPath);
 
+            }
+
+            catch (System.Runtime.InteropServices.COMException comEx)
+            {
+                MessageBox.Show($"COM Exception occurred: {comEx.Message}", "Problem is related with excel", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                // Handle other exceptions
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btn_exit(object sender, EventArgs e)
