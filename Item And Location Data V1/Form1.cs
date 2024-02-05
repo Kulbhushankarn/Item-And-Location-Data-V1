@@ -85,6 +85,7 @@ namespace Item_And_Location_Data_V1
         private void btn_selectExcelfile(object sender, EventArgs e)
         {
             openFileDialog1.ShowDialog();
+            textBox_inputFile.Text = openFileDialog1.FileName;
 
         }
 
@@ -97,7 +98,8 @@ namespace Item_And_Location_Data_V1
 
         private void btn_process(object sender, EventArgs e)
         {
-            string inputFilePath = openFileDialog1.FileName;
+            progressBar1.Visible = true;
+            string inputFilePath = textBox_inputFile.Text;
             string output_SparePartsPath = Path.Combine(textBox_outputFile.Text,"Spare Parts.xlsx");
             string output_LocationsPath = Path.Combine(textBox_outputFile.Text,"Location.xlsx");
             App excelApp = new App();
@@ -108,12 +110,14 @@ namespace Item_And_Location_Data_V1
             
             RowData_Locations obj_Locations = new RowData_Locations();
             RowData_SpareParts obj_SpareParts= new RowData_SpareParts();
-
+            progressBar1.Value = 25;
 
             List<RowData_Locations> dataToBeWrittenInLocations = obj_Locations.ReadDataFromLocationSheet(locationsWorksheet);
+            progressBar1.Value = 50;
             List<RowData_SpareParts> dataToBeWrittenInSpareParts=obj_SpareParts.ReadDataFromSparePartsSheet(sparePartWorksheet);
 
             Workbook outputWorkbook_Locations = excelApp.Workbooks.Add();
+            progressBar1.Value = 75;
             Worksheet outputLocationsWorksheet = outputWorkbook_Locations.Worksheets.Add();
 
             obj_Locations.WriteDataInLocationSheet(outputLocationsWorksheet,dataToBeWrittenInLocations);
@@ -122,7 +126,9 @@ namespace Item_And_Location_Data_V1
             Worksheet outputSparePartsWorksheet=outputWorkbook_SpareParts.Worksheets.Add();
 
             obj_SpareParts.WriteDataInSparePartsSheet(outputSparePartsWorksheet, dataToBeWrittenInSpareParts);
+            progressBar1.Value = 100;
             outputWorkbook_SpareParts.SaveAs(output_SparePartsPath);
+            MessageBox.Show("Excel sheet create successfully! Please check in selected path.");
 
         }
 
@@ -130,6 +136,21 @@ namespace Item_And_Location_Data_V1
         {
             ReleaseResources();
             Environment.Exit(0);
+        }
+
+        private void progressBar1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox_inputFile_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

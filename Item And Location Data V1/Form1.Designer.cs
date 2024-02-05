@@ -44,10 +44,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(19, 61);
-            this.button1.Margin = new System.Windows.Forms.Padding(2);
+            this.button1.Location = new System.Drawing.Point(28, 94);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(103, 21);
+            this.button1.Size = new System.Drawing.Size(154, 32);
             this.button1.TabIndex = 0;
             this.button1.Text = "Select Excel File";
             this.button1.UseVisualStyleBackColor = true;
@@ -55,10 +54,9 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(19, 117);
-            this.button2.Margin = new System.Windows.Forms.Padding(2);
+            this.button2.Location = new System.Drawing.Point(28, 180);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(103, 21);
+            this.button2.Size = new System.Drawing.Size(154, 32);
             this.button2.TabIndex = 1;
             this.button2.Text = "Select Output Path";
             this.button2.UseVisualStyleBackColor = true;
@@ -66,10 +64,9 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(254, 202);
-            this.button3.Margin = new System.Windows.Forms.Padding(2);
+            this.button3.Location = new System.Drawing.Point(381, 311);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(77, 20);
+            this.button3.Size = new System.Drawing.Size(116, 31);
             this.button3.TabIndex = 2;
             this.button3.Text = "Process";
             this.button3.UseVisualStyleBackColor = true;
@@ -77,10 +74,9 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(19, 247);
-            this.button4.Margin = new System.Windows.Forms.Padding(2);
+            this.button4.Location = new System.Drawing.Point(28, 380);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(103, 23);
+            this.button4.Size = new System.Drawing.Size(154, 35);
             this.button4.TabIndex = 3;
             this.button4.Text = "Exit";
             this.button4.UseVisualStyleBackColor = true;
@@ -88,40 +84,41 @@
             // 
             // textBox_inputFile
             // 
-            this.textBox_inputFile.Location = new System.Drawing.Point(143, 61);
-            this.textBox_inputFile.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox_inputFile.Location = new System.Drawing.Point(214, 94);
             this.textBox_inputFile.Multiline = true;
             this.textBox_inputFile.Name = "textBox_inputFile";
-            this.textBox_inputFile.Size = new System.Drawing.Size(331, 23);
+            this.textBox_inputFile.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.textBox_inputFile.Size = new System.Drawing.Size(494, 33);
             this.textBox_inputFile.TabIndex = 4;
+            this.textBox_inputFile.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textBox_inputFile.TextChanged += new System.EventHandler(this.textBox_inputFile_TextChanged);
             // 
             // textBox_outputFile
             // 
-            this.textBox_outputFile.Location = new System.Drawing.Point(143, 117);
-            this.textBox_outputFile.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox_outputFile.Location = new System.Drawing.Point(214, 180);
             this.textBox_outputFile.Multiline = true;
             this.textBox_outputFile.Name = "textBox_outputFile";
-            this.textBox_outputFile.Size = new System.Drawing.Size(331, 23);
+            this.textBox_outputFile.Size = new System.Drawing.Size(494, 33);
             this.textBox_outputFile.TabIndex = 5;
             // 
             // pictureBox1
             // 
             this.pictureBox1.Image = global::Item_And_Location_Data_V1.Properties.Resources.logo;
-            this.pictureBox1.Location = new System.Drawing.Point(408, 202);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox1.Location = new System.Drawing.Point(612, 311);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(97, 57);
+            this.pictureBox1.Size = new System.Drawing.Size(146, 88);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 6;
             this.pictureBox1.TabStop = false;
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(143, 161);
-            this.progressBar1.Margin = new System.Windows.Forms.Padding(2);
+            this.progressBar1.Location = new System.Drawing.Point(214, 248);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(329, 15);
+            this.progressBar1.Size = new System.Drawing.Size(494, 21);
             this.progressBar1.TabIndex = 7;
+            this.progressBar1.Visible = false;
+            this.progressBar1.Click += new System.EventHandler(this.progressBar1_Click);
             // 
             // openFileDialog1
             // 
@@ -129,9 +126,9 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(533, 292);
+            this.ClientSize = new System.Drawing.Size(800, 449);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.textBox_outputFile);
@@ -141,9 +138,9 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "Item And Location Data V1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
