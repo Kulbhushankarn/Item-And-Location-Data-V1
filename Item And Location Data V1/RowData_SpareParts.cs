@@ -90,10 +90,11 @@ namespace Item_And_Location_Data_V1
         public void WriteDataInSparePartsSheet(Worksheet worksheet, List<RowData_SpareParts> sparePartsData)
         {
             WriteHeaders(worksheet);
+            worksheet.Name = "Asset Migration";
 
-            int startRow = 10; // Start writing from the second row
+            int startRow = 10;
             int numRows = sparePartsData.Count;
-            int numColumns = 18; // Adjust the number of columns as needed
+            int numColumns = 18;
 
             Range dataRange = worksheet.Range[worksheet.Cells[startRow, 1], worksheet.Cells[startRow + numRows - 1, numColumns]];
 
@@ -133,7 +134,7 @@ namespace Item_And_Location_Data_V1
 
 
             }
-           
+
             dataRange.Value = dataArray;
         }
         public void WriteHeaders(Worksheet worksheet)
