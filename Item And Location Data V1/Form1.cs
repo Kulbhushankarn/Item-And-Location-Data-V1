@@ -100,10 +100,6 @@ namespace Item_And_Location_Data_V1
         {
 
 
-
-
-
-
             try
             {
                 progressBar1.Visible = true;
