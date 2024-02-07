@@ -1,5 +1,5 @@
-﻿using System;
-using App = Microsoft.Office.Interop.Excel.Application;
+using System;
+using App=  Microsoft.Office.Interop.Excel.Application;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -98,91 +98,56 @@ namespace Item_And_Location_Data_V1
 
         private void btn_process(object sender, EventArgs e)
         {
-            progressBar1.Visible = true;
-            string inputFilePath = textBox_inputFile.Text; // Path where input File is present
-            string output_SparePartsPath = Path.Combine(textBox_outputFile.Text, "Item stock bulk import format.xlsx"); // path where Workbook Location bulk import format.xlsx is to be saved
-            string output_LocationsPath = Path.Combine(textBox_outputFile.Text, "Location bulk import format.xlsx");   // path where Location bulk import format.xlsx is to be saved
-            App excelApp = new App();  // creating instance of Excel Application
 
-            Workbook inputWorkbook = TryOpenAndRecoverWorkbook(excelApp, inputFilePath);  // This is INPUT SHEET WHICH CAN BE CORRUPTED
 
-            if (inputWorkbook != null)
-            {
-                Worksheet locationsWorksheet = inputWorkbook.Sheets["Location"];  //This is LOCATIONS WORKSHEET
-                Worksheet sparePartWorksheet = inputWorkbook.Sheets["SparePart"]; // This is SPARE PARTS [ASSET MIGRATION] WORKSHEET
 
-                RowData_Locations obj_Locations = new RowData_Locations();        // Creating Object of  RowData_Locations Class 
-                RowData_SpareParts obj_SpareParts = new RowData_SpareParts();     // Creating Object og RowData_SpareParts Class
 
-                progressBar1.Value = 25;
 
-                List<RowData_Locations> dataToBeWrittenInLocations = obj_Locations.ReadDataFromLocationSheet(locationsWorksheet);  // This list holds the data that is to be written in Locations worksheet
-                List<RowData_SpareParts> dataToBeWrittenInSpareParts = obj_SpareParts.ReadDataFromSparePartsSheet(sparePartWorksheet);  // This list holds the data that is to be written in assetMigration[spare parts]
-                
-                progressBar1.Value = 50;
-
-                // --------------------- Handling Workbook Location bulk import format.xlsx ----------------------\\
-
-                Workbook outputWorkbook_Locations = excelApp.Workbooks.Add();    // This workbook is for Locations file
-                Worksheet outputLocationsWorksheet = outputWorkbook_Locations.Sheets[1];  // This worksheet is For LOCATIONS WORKSHEET
-                Worksheet outputIntroLocationsWorksheet = outputWorkbook_Locations.Sheets.Add();  // This worksheet is For Intorduction WORKSHEET
-                
-
-                progressBar1.Value = 75;
-                obj_Locations.WriteIntroduction(outputIntroLocationsWorksheet);
-                obj_Locations.WriteDataInLocationSheet(outputLocationsWorksheet, dataToBeWrittenInLocations); // Writing Data in LOCATIONS WORKSHEET
-                outputWorkbook_Locations.SaveAs(output_LocationsPath); // Saving Workbook Location bulk import format.xlsx
-
-                // --------------------- Handling Workbook Item stock bulk import format.xlsx ----------------------\\
-
-                Workbook outputWorkbook_SpareParts = excelApp.Workbooks.Add();// This workbook is for Spare Parts file
-                Worksheet outputSparePartsWorksheet = outputWorkbook_SpareParts.Sheets[1];  // This worksheet is For Asset Migration [Spare Parts] WORKSHEET
-
-                obj_SpareParts.WriteDataInSparePartsSheet(outputSparePartsWorksheet, dataToBeWrittenInSpareParts); // Writing Data in LOCATIONS WORKSHEET
-                outputWorkbook_SpareParts.SaveAs(output_SparePartsPath); // Saving Workbook Item stock bulk import format.xlsx
-
-                progressBar1.Value = 100;
-
-                MessageBox.Show($"Excel sheet create successfully! Please check atr {textBox_outputFile.Text}");
-            } // If inputWorkbook is not null 
-
-            else
-            {
-                MessageBox.Show("File Corrupted");
-            } // If inputWorkbook is null
-
-        }
-        private Workbook TryOpenAndRecoverWorkbook(App excelApp, string filePath)
-        {
-            Workbook workbook = null;
 
             try
             {
-                workbook = excelApp.Workbooks.Open(filePath);
-            }
-            catch (System.Runtime.InteropServices.COMException comEx)
-            {
-                // Attempt to recover if the file is corrupted
-                if (comEx.ErrorCode == -2146827284)
-                {
-                    try
-                    {
-                        MessageBox.Show("Your File is Being Repaired","Corrupted Data Found",MessageBoxButtons.OK,MessageBoxIcon.Information);
-                        workbook = excelApp.Workbooks.Open(filePath, CorruptLoad: XlCorruptLoad.xlRepairFile);
-                    }
-                    catch (System.Runtime.InteropServices.COMException)
-                    {
-                        MessageBox.Show("Data is corrupted. File Cannot be repaired! Please repair the file manually then upload it");
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Com exception occured");
-                }
-            }
+                progressBar1.Visible = true;
+                string inputFilePath = textBox_inputFile.Text;
+                string output_SparePartsPath = Path.Combine(textBox_outputFile.Text, "Spare Parts.xlsx");
+                string output_LocationsPath = Path.Combine(textBox_outputFile.Text, "Location.xlsx");
+                App excelApp = new App();
 
-            return workbook;
+                Workbook inputWorkbook = excelApp.Workbooks.Open(inputFilePath);
+                Worksheet locationsWorksheet = inputWorkbook.Sheets["Location"];
+                Worksheet sparePartWorksheet = inputWorkbook.Sheets["SparePart"];
+
+                RowData_Locations obj_Locations = new RowData_Locations();
+                RowData_SpareParts obj_SpareParts = new RowData_SpareParts();
+                progressBar1.Value = 25;
+
+                List<RowData_Locations> dataToBeWrittenInLocations = obj_Locations.ReadDataFromLocationSheet(locationsWorksheet);
+                progressBar1.Value = 50;
+                List<RowData_SpareParts> dataToBeWrittenInSpareParts = obj_SpareParts.ReadDataFromSparePartsSheet(sparePartWorksheet);
+
+                Workbook outputWorkbook_Locations = excelApp.Workbooks.Add();
+                progressBar1.Value = 75;
+                Worksheet outputLocationsWorksheet = outputWorkbook_Locations.Worksheets.Add();
+
+                obj_Locations.WriteDataInLocationSheet(outputLocationsWorksheet, dataToBeWrittenInLocations);
+                outputWorkbook_Locations.SaveAs(output_LocationsPath);
+                Workbook outputWorkbook_SpareParts = excelApp.Workbooks.Add();
+                Worksheet outputSparePartsWorksheet = outputWorkbook_SpareParts.Worksheets.Add();
+
+                obj_SpareParts.WriteDataInSparePartsSheet(outputSparePartsWorksheet, dataToBeWrittenInSpareParts);
+                progressBar1.Value = 100;
+                outputWorkbook_SpareParts.SaveAs(output_SparePartsPath);
+                MessageBox.Show("Excel sheet create successfully! Please check in selected path.");
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ReleaseResources();
+            }
         }
+
         private void btn_exit(object sender, EventArgs e)
         {
             ReleaseResources();
